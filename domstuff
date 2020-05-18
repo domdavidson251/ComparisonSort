@@ -1,0 +1,71 @@
+def selection_sort(alist):
+    """ The selection sort algorithm; select max value of unsorted array
+    and move it to the end
+    Args:
+        alist(list): the list that needs to be sorted
+    Returns:
+        integer: the number of comparisons made in the sorting algroithm
+    """
+    comparison = 0
+    for i in range(len(alist)):
+        max_index = len(alist) - 1 - i
+        for j in range(i+1, len(alist)):
+            compar_index = len(alist) - 1 - j
+            comparison = comparison + 1
+            if alist[max_index] < alist[compar_index]:
+                max_index = compar_index
+        temp = alist[len(alist) - 1 - i]
+        alist[len(alist) - 1 - i] = alist[max_index]
+        alist[max_index] = temp
+    return comparison
+
+def quick_sort(alist):
+    """ The quick sort algorithm; divide and conquer approach,
+    partition the list into two parts at a pivot value
+    Utilizes a helper function to implement recursion (quick_sort_helper()
+    Args:
+        alist(list): the list that needs to be sorted
+    Returns:
+        integer: the number of comparisons made in the sorting algroithm
+    """
+    return quick_sort_helper(alist, 0, len(alist)-1, 0)
+
+def quick_sort_helper(alist, low , high, comparisons):
+    """ a helper function for quick_sort to help implement recursion and keep track of comparisons
+    Args:
+        alist(list): the list that needs to be sorted
+        low(int): the index of the start of the partitioned array
+        high(int): the index of the end of the partitioned array
+        comparisons(int): the number of comparisons made in the sorting algroithm
+    Returns:
+        integer: the number of comparisons made in the sorting algroithm
+    """
+    comparisons = comparisons + 1
+    if low >=  high:
+        return
+    mid = (low + high) // 2
+    pivot = alist[mid]
+    alist[mid] = alist[low]
+    alist[low] = pivot
+    left = low+1
+    right = high
+    comparisons = comparisons + 1
+    while left < right:
+        comparisons = comparisons + 2
+        while left <= high and alist[left] <= pivot:
+            comparisons = comparisons + 2
+            left = left + 1
+        comparisons = comparisons + 2
+        while right > low and pivot <= alist[right]:
+            comparisons = comparisons + 2
+            right = right - 1
+        comparisons = comparisons + 1
+        if left <= right:
+            temp = alist[left]
+            alist[left] = alist[right]
+            alist[right] = temp
+    alist[low] = alist[right]
+    alist[right] = pivot
+    quick_sort_helper(alist, low, right - 1, comparisons)
+    quick_sort_helper(alist, right + 1, high, comparisons)
+    return comparisons
